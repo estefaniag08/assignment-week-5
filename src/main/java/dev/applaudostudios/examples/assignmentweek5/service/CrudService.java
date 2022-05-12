@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface CrudService<T extends IEntityDTO, K> {
 
-    void createEntity(T entity);
-    void updateEntity(T entity);
+    T createEntity(T entity);
+    T updateEntity(T entity);
     Optional<T> getEntity(K key);
     void deleteEntity(K key);
 

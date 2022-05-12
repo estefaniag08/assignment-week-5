@@ -14,7 +14,6 @@ public class UserDTO implements IEntityDTO {
     private Long id;
 
     @Email( message = "Invalid email format.")
-    @NotEmpty( message = "Email is required.")
     private String email;
 
     @NotEmpty(message = "Firstname is required.")

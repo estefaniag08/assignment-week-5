@@ -16,18 +16,19 @@ public class UserService implements CrudService<UserDTO, Long>{
     UserRepository userRepository;
 
     @Override
-    public void createEntity(UserDTO entity) {
+    public UserDTO createEntity(UserDTO entity) {
         if(getEntityByEmail(entity.getEmail()).isEmpty()){
             User user = new User(entity.getEmail(), entity.getFirstName(), entity.getLastName(), entity.getPhoneNumber());
-            System.out.println(user);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            entity.setId(savedUser.getId());
+            return entity;
         } else {
             throw new EmailExistsException("The user already exists with the given email account.");
         }
     }
 
     @Override
-    public void updateEntity(UserDTO entity){
+    public UserDTO updateEntity(UserDTO entity){
         if(userRepository.existsById(entity.getId())){
             Optional<User> repoUser = userRepository.findById(entity.getId());
             if(repoUser.isPresent()){
@@ -41,7 +42,9 @@ public class UserService implements CrudService<UserDTO, Long>{
                     repoUser.get().setPhoneNumber(entity.getPhoneNumber());
                 }
                 userRepository.save(repoUser.get());
+                //entity.setEmail(repoUser.get().getEmail());
             }
+            return entity;
         } else {
             throw new CrudException("User not found.");
         }
